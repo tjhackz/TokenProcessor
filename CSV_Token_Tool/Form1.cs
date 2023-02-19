@@ -1,4 +1,5 @@
 using CSVTokenOperations;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace CSV_Token_Tool
@@ -106,7 +107,9 @@ namespace CSV_Token_Tool
             int TotalFiles = MasterDir?.Count() ?? 0;
             int Moved_Master_count = 0;
             int Moved_Insturment_count = 0;
+            Stopwatch stopwatch = new Stopwatch();
 
+            stopwatch.Start();
             if (MasterDir?.Count > 0)
             {
                 foreach (string item in MasterDir)
@@ -154,18 +157,22 @@ namespace CSV_Token_Tool
             {
                 AddToLogs("Not found any CSV inside MASTER dir. Please check the selection.");
             }
+            stopwatch.Stop();
+            TimeSpan ts = stopwatch.Elapsed;
+            AddToLogs(String.Format("Total Time Taken for execution: {0:00}h:{1:00}m:{2:00}s.{3}ms", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds));
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Jay for Upwork.");
+            //MessageBox.Show("Created by Jay for Upwork.");
             SetStatusStripMessage("Application Ready.");
             EnableDisableRun();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bye! Created by Jay for Upwork.");
+            //MessageBox.Show("Bye! Created by Jay for Upwork.");
             this.Close();
         }
         private void SetStatusStripMessage(string msg)
@@ -182,6 +189,15 @@ namespace CSV_Token_Tool
             textBox5.Text = string.Empty;
             folderBrowserDialog1.Dispose();
             folderBrowserDialog2.Dispose();
+
+
+            lbl_moved_to_instr_delete.Text = "-";
+            lbl_moved_to_master_delete.Text = "-";
+            lbl_total_instr_records.Text = "-";
+            lbl_total_master_records.Text = "-";    
+
+
+
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
